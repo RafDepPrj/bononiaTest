@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prenota una consulenza — Bononia Materassi</title>
+<meta name="description" content="Prenota una consulenza gratuita presso il nostro showroom di Solofra. Troveremo insieme il materasso perfetto per te.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Assistant', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #121212;
+  background: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: 0.04em;
+}
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+a { text-decoration: none; color: inherit; }
+
+/* ── COLORI BRAND — grigio talpa del logo ── */
+:root {
+  --brand:      #8a8076;   /* grigio-talpa del logo BONONIA */
+  --brand-dark: #6b6159;
+  --brand-soft: #f2f0ee;
+  --ink:        #121212;
+  --ink-mid:    #444;
+  --ink-light:  #767676;
+  --border:     #e3e3e3;
+  --bg-alt:     #f3f3f3;
+  --white:      #ffffff;
+  --green-wa:   #25D366;
+  --r:          4px;
+}
+
+/* ── ANNOUNCEMENT BAR ── */
+.bar {
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+  padding: 10px 24px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+/* ── HEADER ── */
+.site-header {
+  border-bottom: 1px solid var(--border);
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.hdr {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.hdr-logo img { height: 38px; width: auto; display: block; }
+.hdr-nav { display: flex; align-items: center; gap: 24px; }
+.hdr-nav a {
+  font-size: 0.86rem;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: 0.05em;
+  transition: color 0.2s;
+}
+.hdr-nav a:hover { color: var(--brand); }
+.hdr-icons { display: flex; align-items: center; gap: 16px; }
+.hdr-icons a {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 0.8rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink);
+}
+.hdr-icons svg { width: 18px; height: 18px; }
+@media (max-width: 780px) {
+  .hdr-nav { display: none; }
+  .hdr { height: 56px; }
+}
+
+/* ── WRAP ── */
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+/* ── BREADCRUMB ── */
+.bc {
+  display: flex; align-items: center; gap: 8px;
+  padding: 14px 0; font-size: 0.78rem; color: var(--ink-light);
+  border-bottom: 1px solid var(--border);
+}
+.bc a { color: var(--ink-light); }
+.bc a:hover { color: var(--ink); text-decoration: underline; }
+.bc svg { width: 8px; height: 8px; flex-shrink: 0; }
+
+/* ── PAGE TITLE ── */
+.page-title {
+  text-align: center;
+  padding: 52px 24px 44px;
+  border-bottom: 1px solid var(--border);
+}
+.page-title h1 {
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 400; letter-spacing: -0.01em;
+  color: var(--ink); margin-bottom: 10px; line-height: 1.15;
+}
+.page-title p {
+  font-size: 0.98rem; color: var(--ink-mid);
+  max-width: 540px; margin: 0 auto; line-height: 1.6;
+}
+
+/* ── LAYOUT ── */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 40px;
+  padding: 48px 0 80px;
+  align-items: start;
+}
+@media (max-width: 960px) {
+  .layout { grid-template-columns: 1fr; gap: 28px; }
+  .sidebar { order: -1; }
+}
+
+/* ── CARD ── */
+.card { border: 1px solid var(--border); border-radius: var(--r); background: #fff; overflow: hidden; }
+.card-head { padding: 24px 28px; border-bottom: 1px solid var(--border); }
+.card-body { padding: 28px; }
+
+/* progress */
+.prog-row { display: flex; align-items: center; gap: 14px; }
+.prog-track { flex: 1; height: 3px; background: var(--border); border-radius: 99px; overflow: hidden; }
+.prog-fill {
+  height: 100%; background: var(--brand); border-radius: 99px;
+  transition: width 0.55s cubic-bezier(0.25,0.46,0.45,0.94);
+  width: 17%;
+}
+.prog-lbl { font-size: 0.76rem; font-weight: 600; color: var(--ink-light); letter-spacing: 0.1em; white-space: nowrap; }
+
+/* steps */
+.steps { min-height: 340px; }
+.step { display: none; animation: si 0.38s ease; }
+.step.active { display: block; }
+@keyframes si {
+  from { opacity: 0; transform: translateX(14px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.s-tag {
+  display: inline-block; font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--brand); margin-bottom: 8px;
+}
+.s-title {
+  font-size: clamp(1.25rem, 2.5vw, 1.65rem); font-weight: 400;
+  color: var(--ink); letter-spacing: -0.01em; line-height: 1.2; margin-bottom: 6px;
+}
+.s-help { font-size: 0.86rem; color: var(--ink-light); margin-bottom: 24px; }
+
+/* options */
+.opts { display: grid; gap: 8px; }
+.opts.c2 { grid-template-columns: repeat(2,1fr); }
+@media (max-width: 520px) { .opts.c2 { grid-template-columns: 1fr; } }
+
+.opt {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 15px;
+  border: 1px solid var(--border); border-radius: var(--r);
+  background: #fff; color: var(--ink); cursor: pointer;
+  transition: border-color 0.18s; text-align: left; width: 100%;
+}
+.opt:hover { border-color: var(--brand-dark); }
+.opt.sel { border-color: var(--brand); background: var(--brand-soft); }
+
+.opt-ic {
+  flex-shrink: 0; width: 34px; height: 34px;
+  border-radius: var(--r); background: var(--bg-alt);
+  display: grid; place-items: center; color: var(--ink-mid);
+  transition: background 0.18s, color 0.18s;
+}
+.opt.sel .opt-ic { background: var(--brand); color: #fff; }
+.opt-ic svg { width: 17px; height: 17px; }
+.opt-tx { flex: 1; }
+.opt-tx b { display: block; font-size: 0.9rem; font-weight: 600; line-height: 1.2; color: var(--ink); }
+.opt-tx small { display: block; font-size: 0.76rem; color: var(--ink-light); margin-top: 2px; }
+.opt-ck {
+  flex-shrink: 0; width: 17px; height: 17px;
+  border: 1px solid var(--border); border-radius: 50%;
+  display: grid; place-items: center; transition: all 0.18s;
+}
+.opt.sel .opt-ck { background: var(--brand); border-color: var(--brand); }
+.opt-ck svg { width: 9px; height: 9px; color: #fff; opacity: 0; transform: scale(0.4); transition: all 0.18s; }
+.opt.sel .opt-ck svg { opacity: 1; transform: scale(1); }
+
+/* fields */
+.fields { display: grid; gap: 12px; }
+.frow { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 460px) { .frow { grid-template-columns: 1fr; } }
+.fg { display: flex; flex-direction: column; gap: 5px; }
+.fg label { font-size: 0.8rem; font-weight: 600; color: var(--ink); letter-spacing: 0.05em; }
+.fg label span { font-weight: 400; color: var(--ink-light); }
+.fi, .ft {
+  width: 100%; padding: 11px 13px;
+  border: 1px solid var(--border); border-radius: var(--r);
+  background: #fff; color: var(--ink);
+  font-family: 'Assistant', sans-serif; font-size: 0.91rem;
+  letter-spacing: 0.04em; transition: border-color 0.18s, box-shadow 0.18s;
+}
+.fi::placeholder, .ft::placeholder { color: var(--ink-light); }
+.fi:focus, .ft:focus {
+  outline: none; border-color: var(--brand);
+  box-shadow: 0 0 0 2px rgba(138,128,118,0.15);
+}
+.ft { min-height: 84px; resize: vertical; }
+.fn { font-size: 0.73rem; color: var(--ink-light); }
+.fn a { color: var(--brand); }
+
+/* nav */
+.qnav {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 28px; padding-top: 22px; border-top: 1px solid var(--border);
+}
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 11px 22px; border-radius: var(--r);
+  font-family: 'Assistant', sans-serif; font-size: 0.86rem; font-weight: 600;
+  letter-spacing: 0.05em; cursor: pointer; transition: all 0.18s; border: none;
+}
+.btn-ghost {
+  background: #fff; border: 1px solid var(--border); color: var(--ink-mid);
+}
+.btn-ghost:hover { border-color: var(--ink); color: var(--ink); }
+.btn-ghost.hidden { visibility: hidden; pointer-events: none; }
+.btn-primary { background: var(--brand); color: #fff; margin-left: auto; }
+.btn-primary:hover:not(:disabled) { background: var(--brand-dark); }
+.btn-primary:disabled { opacity: 0.3; cursor: not-allowed; }
+
+.btn-wa {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 14px 22px; border-radius: var(--r);
+  background: var(--green-wa); color: #fff;
+  font-family: 'Assistant', sans-serif; font-size: 0.91rem; font-weight: 700;
+  letter-spacing: 0.05em; width: 100%; transition: background 0.18s;
+  margin-top: 20px; border: none; cursor: pointer; text-decoration: none;
+}
+.btn-wa:hover { background: #1ebe5a; }
+.btn-wa svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+/* success */
+.qsuccess { display: none; text-align: center; padding: 20px 0; animation: si 0.5s ease; }
+.qsuccess.on { display: block; }
+.suc-ic {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: var(--brand); color: #fff;
+  display: grid; place-items: center; margin: 0 auto 18px;
+  animation: pop 0.4s cubic-bezier(0.22,1.5,0.36,1);
+}
+@keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
+.suc-ic svg { width: 26px; height: 26px; }
+.suc-title { font-size: 1.5rem; font-weight: 400; color: var(--ink); margin-bottom: 8px; }
+.suc-body { font-size: 0.9rem; color: var(--ink-mid); max-width: 380px; margin: 0 auto; line-height: 1.65; }
+
+/* ── SIDEBAR ── */
+.sidebar { display: flex; flex-direction: column; gap: 16px; }
+.scard { border: 1px solid var(--border); border-radius: var(--r); background: #fff; overflow: hidden; }
+.scard-head {
+  padding: 15px 18px; border-bottom: 1px solid var(--border);
+  font-size: 0.76rem; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--ink);
+}
+.scard-body { padding: 18px; }
+
+.wa-btn {
+  display: flex; align-items: center; gap: 12px;
+  padding: 15px 18px; background: var(--green-wa); color: #fff;
+  border-radius: var(--r); font-size: 0.86rem; font-weight: 700;
+  letter-spacing: 0.04em; transition: background 0.18s;
+}
+.wa-btn:hover { background: #1ebe5a; }
+.wa-btn svg { width: 22px; height: 22px; flex-shrink: 0; }
+.wa-btn-tx b { display: block; font-size: 0.9rem; }
+.wa-btn-tx span { font-size: 0.76rem; font-weight: 400; opacity: 0.85; }
+
+.info-list { list-style: none; display: flex; flex-direction: column; gap: 13px; }
+.info-list li {
+  display: flex; align-items: flex-start; gap: 11px;
+  font-size: 0.86rem; color: var(--ink-mid); line-height: 1.45;
+}
+.info-list li b { display: block; font-weight: 600; color: var(--ink); margin-bottom: 1px; }
+.ii {
+  flex-shrink: 0; width: 30px; height: 30px; border-radius: var(--r);
+  background: var(--brand-soft); display: grid; place-items: center;
+  color: var(--brand); margin-top: 1px;
+}
+.ii svg { width: 15px; height: 15px; }
+
+.svc-list { list-style: none; }
+.svc-list li {
+  display: flex; align-items: center; gap: 9px;
+  padding: 9px 0; border-bottom: 1px solid var(--border);
+  font-size: 0.86rem; color: var(--ink-mid);
+}
+.svc-list li:last-child { border-bottom: none; }
+.svc-list li::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--brand); flex-shrink: 0; }
+
+.del-badge {
+  background: var(--bg-alt); border: 1px solid var(--border); border-radius: var(--r);
+  padding: 13px 15px; display: flex; align-items: center; gap: 11px;
+  font-size: 0.82rem; color: var(--ink-mid); line-height: 1.4;
+}
+.del-badge svg { width: 18px; height: 18px; color: var(--brand); flex-shrink: 0; }
+.del-badge b { color: var(--ink); }
+
+/* ── FOOTER ── */
+.site-footer { background: var(--ink); color: rgba(255,255,255,0.65); padding: 44px 0 22px; }
+.footer-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 40px; margin-bottom: 36px; }
+@media (max-width: 640px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 28px; } }
+@media (max-width: 400px) { .footer-grid { grid-template-columns: 1fr; } }
+.footer-brand { font-size: 1rem; font-weight: 700; color: #fff; letter-spacing: 0.08em; margin-bottom: 8px; }
+.footer-desc { font-size: 0.83rem; line-height: 1.6; max-width: 260px; }
+.footer-col h4 { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #fff; margin-bottom: 12px; }
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+.footer-col ul a { font-size: 0.83rem; transition: color 0.18s; }
+.footer-col ul a:hover { color: #fff; }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.1); padding-top: 18px;
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px;
+  font-size: 0.76rem; color: rgba(255,255,255,0.35);
+}
+</style>
+</head>
+<body>
+
+<!-- BAR -->
+<div class="bar">CONSEGNE IN 24/48 ORE &nbsp;·&nbsp; ASSISTENZA CLIENTI LUN–VEN 9–18 &nbsp;·&nbsp; NESSUN MINIMO D'ORDINE</div>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="hdr">
+    <a href="https://www.bononiamaterassi.com" class="hdr-logo">
+      <!-- Logo reale Bononia -->
+      <img src="data:image/jpeg;base64,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"
+           alt="Bononia Materassi — Personalizza il tuo riposo">
+    </a>
+    <nav class="hdr-nav">
+      <a href="https://www.bononiamaterassi.com/pages/chi-siamo">Chi siamo</a>
+      <a href="https://www.bononiamaterassi.com/collections/materassi-1">Materassi</a>
+      <a href="https://www.bononiamaterassi.com/collections/reti-a-doghe">Reti a Doghe</a>
+      <a href="https://www.bononiamaterassi.com/collections/guanciali-1">Guanciali</a>
+      <a href="https://www.bononiamaterassi.com/collections/poltrone-relax">Poltrone Relax</a>
+    </nav>
+    <div class="hdr-icons">
+      <a href="https://www.bononiamaterassi.com/customer_authentication/redirect">
+        <svg viewBox="0 0 18 19" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M6 4.5a3 3 0 116 0 3 3 0 01-6 0zm3-4a4 4 0 100 8 4 4 0 000-8zm5.58 12.15c1.12.82 1.83 2.24 1.91 4.85H1.51c.08-2.6.79-4.03 1.9-4.85C4.66 11.75 6.5 11.5 9 11.5s4.35.26 5.58 1.15z" fill="currentColor"/></svg>
+        Accedi
+      </a>
+      <a href="https://www.bononiamaterassi.com/cart">
+        <svg viewBox="0 0 40 40" fill="none" width="20" height="20"><path d="m15.75 11.8h-3.16l-.77 11.6a5 5 0 0 0 4.99 5.34h7.38a5 5 0 0 0 4.99-5.33l-.78-11.61zm0 1h-2.22l-.71 10.67a4 4 0 0 0 3.99 4.27h7.38a4 4 0 0 0 4-4.27l-.72-10.67h-2.22v.63a4.75 4.75 0 1 1 -9.5 0zm8.5 0h-7.5v.63a3.75 3.75 0 1 0 7.5 0z" fill="currentColor" fill-rule="evenodd"/></svg>
+      </a>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav class="bc">
+    <a href="https://www.bononiamaterassi.com">Home</a>
+    <svg viewBox="0 0 10 6" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z"/></svg>
+    <span>Prenota una consulenza</span>
+  </nav>
+
+  <div class="page-title">
+    <h1>Prenota una consulenza gratuita</h1>
+    <p>Rispondi a poche domande. Ti ricontattiamo su WhatsApp entro 24 ore per fissare l'appuntamento nel nostro showroom di Solofra.</p>
+  </div>
+
+  <div class="layout">
+
+    <!-- QUIZ -->
+    <div class="card">
+      <div class="card-head" id="cardHead">
+        <div class="prog-row">
+          <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+          <span class="prog-lbl" id="progLbl">Passo 1 di 6</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="steps" id="stepsWrap">
+
+          <!-- 1 -->
+          <div class="step active" data-step="1">
+            <span class="s-tag">Inizia qui</span>
+            <h2 class="s-title">Cosa stai cercando?</h2>
+            <p class="s-help">Seleziona il prodotto principale. Potrai aggiungere dettagli dopo.</p>
+            <div class="opts c2" data-field="prodotto" data-req="true">
+              <button type="button" class="opt" data-v="Materasso">
+                <span class="opt-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="12" rx="3"/><path d="M2 11h20"/></svg></span>
+                <span class="opt-tx"><b>Materasso</b><small>Nuovo o sostituzione</small></span>
+                <span class="opt-ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+              </button>
+              <button type="button" class="opt" data-v="Rete a doghe">
+                <span class="opt-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="8" width="20" height="10" rx="2"/><line x1="7" y1="8" x2="7" y2="18"/><line x1="12" y1="8" x2="12" y2="18"/><line x1="17" y1="8" x2="17" y2="18"/></svg></span>
+                <span class="opt-tx"><b>Rete a doghe</b><small>Fissa o motorizzata</small></span>
+                <span class="opt-ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+              </button>
+              <button type="button" class="opt" data-v="Guanciali">
+                <span class="opt-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="9" rx="4"/></svg></span>
+                <span class="opt-tx"><b>Guanciali</b><small>Memory, lattice, piuma</small></span>
+                <span class="opt-ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+              </button>
+              <button type="button" class="opt" data-v="Set completo (materasso + rete)">
+                <span class="opt-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg></span>
+                <span class="opt-tx"><b>Set completo</b><small>Materasso + rete</small></span>
+                <span class="opt-ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+              </button>
+              <button type="button" class="opt" data-v="Lista nozze">
+                <span class="opt-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>
+                <span class="opt-tx"><b>Lista nozze</b><small>Corredo per gli sposi</small></span>
+                <span class="opt-ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+              </button>
+              <button type="button" class="opt" data-v="Rigenerazione materasso">
+                <span class="opt-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></span>
+                <span class="opt-tx"><b>Rigenerazione</b><small>Rinnova il vecchio materasso</small></span>
+                <span class="opt-ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 2 -->
+          <div class="step" data-step="2">
+            <span class="s-tag">Passo 2 di 6</span>
+            <h2 class="s-title">Per chi è?</h2>
+            <p class="s-help">Ci aiuta ad individuare il prodotto più adatto.</p>
+            <div class="opts" data-field="destinatario" data-req="true">
+              <button type="button" class="opt" data-v="Coppia">
+                <span class="opt-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+                <span class="opt-tx"><b>Coppia</b><small>Letto matrimoniale condiviso</small></span>
+                <span class="opt-ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+              </button>
+              <button type="button" class="opt" data-v="Singolo adulto">
+                <span class="opt-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+                <span class="opt-tx"><b>Singolo adulto</b><small>Piazza singola o 1 e mezza</small></span>
+                <span class="opt-ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+              </button>
+              <button type="button" class="opt" data-v="Bambino / Ragazzo">
+                <span class="opt-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M12 14c-5 0-8 2.5-8 4v1h16v-1c0-1.5-3-4-8-4z"/></svg></span>
+                <span class="opt-tx"><b>Bambino / Ragazzo</b><small>Per chi è in crescita</small></span>
+                <span class="opt-ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+              </button>
+              <button type="button" class="opt" data-v="Anziano o esigenze speciali">
+                <span class="opt-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+                <span class="opt-tx"><b>Esigenze speciali</b><small>Mal di schiena, allergie, anziani</small></span>
+                <span class="opt-ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 3 -->
+          <div class="step" data-step="3">
+            <span class="s-tag">Passo 3 di 6</span>
+            <h2 class="s-title">Preferenza di materiale?</h2>
+            <p class="s-help">Se non sei sicuro, ci pensiamo noi — è esattamente per questo che esistiamo.</p>
+            <div class="opts c2" data-field="materiale" data-req="true">
+              <button type="button" class="opt" data-v="Memory foam"><span class="opt-tx"><b>Memory foam</b><small>Si adatta alla forma del corpo</small></span><span class="opt-ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></button>
+              <button type="button" class="opt" data-v="Lattice naturale"><span class="opt-tx"><b>Lattice naturale</b><small>Traspirante e anti-acaro</small></span><span class="opt-ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></button>
+              <button type="button" class="opt" data-v="Molle insacchettate"><span class="opt-tx"><b>Molle insacchettate</b><small>Sostegno e ventilazione</small></span><span class="opt-ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></button>
+              <button type="button" class="opt" data-v="Graphene"><span class="opt-tx"><b>Graphene</b><small>Innovativo, ideale per mal di schiena</small></span><span class="opt-ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></button>
+              <button type="button" class="opt" data-v="Non lo so ancora" style="grid-column:1/-1"><span class="opt-tx"><b>Non lo so ancora</b><small>Preferirei un consiglio dai vostri esperti</small></span><span class="opt-ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></button>
+            </div>
+          </div>
+
+          <!-- 4 -->
+          <div class="step" data-step="4">
+            <span class="s-tag">Passo 4 di 6</span>
+            <h2 class="s-title">Che misure ti servono?</h2>
+            <p class="s-help">Realizziamo qualsiasi dimensione su misura — anche ovale, rotonda o trapezoidale.</p>
+            <div class="opts" data-field="misura" data-req="true">
+              <button type="button" class="opt" data-v="Singolo (80×190 / 90×200)">
+                <span class="opt-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="5" width="7" height="14" rx="2"/></svg></span>
+                <span class="opt-tx"><b>Singolo</b><small>80×190 cm · 90×200 cm</small></span>
+                <span class="opt-ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+              </button>
+              <button type="button" class="opt" data-v="Piazza e mezza (120×190 / 120×200)">
+                <span class="opt-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="10" height="14" rx="2"/></svg></span>
+                <span class="opt-tx"><b>Piazza e mezza</b><small>120×190 cm · 120×200 cm</small></span>
+                <span class="opt-ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+              </button>
+              <button type="button" class="opt" data-v="Matrimoniale (160×190 / 160×200)">
+                <span class="opt-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="20" height="14" rx="2"/></svg></span>
+                <span class="opt-tx"><b>Matrimoniale</b><small>160×190 cm · 160×200 cm</small></span>
+                <span class="opt-ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+              </button>
+              <button type="button" class="opt" data-v="Misura fuori standard">
+                <span class="opt-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></span>
+                <span class="opt-tx"><b>Misura fuori standard</b><small>Ovale, rotonda, trapezoidale o custom</small></span>
+                <span class="opt-ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 5 -->
+          <div class="step" data-step="5">
+            <span class="s-tag">Passo 5 di 6</span>
+            <h2 class="s-title">Quando vorresti venire?</h2>
+            <p class="s-help">Ci aiuta ad organizzare la disponibilità del nostro consulente.</p>
+            <div class="opts" data-field="tempistica" data-req="true">
+              <button type="button" class="opt" data-v="Il prima possibile">
+                <span class="opt-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+                <span class="opt-tx"><b>Il prima possibile</b><small>Entro questa settimana</small></span>
+                <span class="opt-ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+              </button>
+              <button type="button" class="opt" data-v="Entro 2-3 settimane">
+                <span class="opt-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
+                <span class="opt-tx"><b>Entro 2–3 settimane</b><small>Tempistiche normali</small></span>
+                <span class="opt-ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+              </button>
+              <button type="button" class="opt" data-v="Sto raccogliendo informazioni">
+                <span class="opt-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
+                <span class="opt-tx"><b>Sto raccogliendo informazioni</b><small>Voglio prima un'idea di prezzi</small></span>
+                <span class="opt-ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 6 -->
+          <div class="step" data-step="6">
+            <span class="s-tag">Ultimo passo</span>
+            <h2 class="s-title">I tuoi contatti</h2>
+            <p class="s-help">Ti ricontatteremo su WhatsApp per confermare l'appuntamento.</p>
+            <div class="fields">
+              <div class="frow">
+                <div class="fg"><label>Nome *</label><input class="fi" type="text" name="nome" placeholder="Mario" data-req="true"></div>
+                <div class="fg"><label>Cognome</label><input class="fi" type="text" name="cognome" placeholder="Rossi"></div>
+              </div>
+              <div class="fg"><label>Telefono *</label><input class="fi" type="tel" name="telefono" placeholder="+39 333 000 0000" data-req="true"></div>
+              <div class="fg"><label>Email <span>(facoltativa)</span></label><input class="fi" type="email" name="email" placeholder="mario@esempio.it"></div>
+              <div class="fg"><label>Note <span>(facoltative)</span></label><textarea class="ft" name="note" placeholder="Misure particolari, domande, preferenze..."></textarea></div>
+              <p class="fn">Compilando il modulo accetti la nostra <a href="https://www.bononiamaterassi.com/policies/privacy-policy">informativa sulla privacy</a>.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- SUCCESS -->
+        <div class="qsuccess" id="qSuccess">
+          <div class="suc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <h2 class="suc-title">Richiesta inviata!</h2>
+          <p class="suc-body" id="sucBody">Clicca il pulsante per inviare la tua richiesta a Danila su WhatsApp. Ti risponderemo al più presto.</p>
+          <a href="#" class="btn-wa" id="waLink" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.97 0C5.365 0 0 5.365 0 11.97c0 2.09.548 4.085 1.591 5.836L.057 23.386a.5.5 0 00.609.609l5.58-1.535A11.924 11.924 0 0011.97 24c6.605 0 11.97-5.365 11.97-11.97S18.575 0 11.97 0zm0 21.818a9.8 9.8 0 01-4.998-1.367l-.358-.213-3.71 1.021 1.021-3.712-.213-.358A9.799 9.799 0 012.152 11.97c0-5.41 4.408-9.818 9.818-9.818s9.818 4.408 9.818 9.818-4.408 9.818-9.818 9.818z"/></svg>
+            Invia su WhatsApp a Danila
+          </a>
+        </div>
+
+        <div class="qnav" id="qNav">
+          <button type="button" class="btn btn-ghost hidden" id="btnBack">← Indietro</button>
+          <button type="button" class="btn btn-primary" id="btnNext" disabled><span id="nextLbl">Continua</span> →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <a href="https://wa.me/393468069102" target="_blank" rel="noopener" class="wa-btn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.97 0C5.365 0 0 5.365 0 11.97c0 2.09.548 4.085 1.591 5.836L.057 23.386a.5.5 0 00.609.609l5.58-1.535A11.924 11.924 0 0011.97 24c6.605 0 11.97-5.365 11.97-11.97S18.575 0 11.97 0zm0 21.818a9.8 9.8 0 01-4.998-1.367l-.358-.213-3.71 1.021 1.021-3.712-.213-.358A9.799 9.799 0 012.152 11.97c0-5.41 4.408-9.818 9.818-9.818s9.818 4.408 9.818 9.818-4.408 9.818-9.818 9.818z"/></svg>
+        <div class="wa-btn-tx"><b>Chatta con Danila</b><span>Risposta in pochi minuti</span></div>
+      </a>
+
+      <div class="scard">
+        <div class="scard-head">Il nostro showroom</div>
+        <div class="scard-body">
+          <ul class="info-list">
+            <li>
+              <span class="ii"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s-7-7.5-7-13a7 7 0 0 1 14 0c0 5.5-7 13-7 13z"/><circle cx="12" cy="9" r="2.5"/></svg></span>
+              <div><b>Indirizzo</b>Via Casa Papa, 164 — Solofra (AV)</div>
+            </li>
+            <li>
+              <span class="ii"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
+              <div><b>Orari</b>Lun – Sab: 9:00 – 18:00</div>
+            </li>
+            <li>
+              <span class="ii"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></span>
+              <div><b>Telefono</b><a href="tel:+393468069102" style="color:var(--brand)">+39 346 806 9102</a></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="scard">
+        <div class="scard-head">I nostri servizi</div>
+        <div class="scard-body">
+          <ul class="svc-list">
+            <li>Materassi artigianali su misura</li>
+            <li>Reti a doghe fisse e motorizzate</li>
+            <li>Guanciali e accessori per il sonno</li>
+            <li>Rigenerazione materasso esistente</li>
+            <li>Lista nozze personalizzata</li>
+            <li>Consegna in 24/48 ore</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="del-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        <div><b>Consegne in 24/48 ore</b><br>su tutto il territorio nazionale</div>
+      </div>
+    </aside>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">BONONIA MATERASSI</div>
+        <p class="footer-desc">Produciamo materassi artigianali su misura da tre generazioni. Showroom a Solofra (AV), consegne in tutta Italia.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Info</h4>
+        <ul>
+          <li><a href="https://www.bononiamaterassi.com/pages/chi-siamo">Chi siamo</a></li>
+          <li><a href="https://www.bononiamaterassi.com/policies/privacy-policy">Privacy</a></li>
+          <li><a href="https://www.bononiamaterassi.com/policies/terms-of-service">Termini</a></li>
+          <li><a href="https://www.bononiamaterassi.com/policies/refund-policy">Rimborsi</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Prodotti</h4>
+        <ul>
+          <li><a href="https://www.bononiamaterassi.com/collections/materassi-1">Materassi</a></li>
+          <li><a href="https://www.bononiamaterassi.com/collections/reti-a-doghe">Reti a Doghe</a></li>
+          <li><a href="https://www.bononiamaterassi.com/collections/guanciali-1">Guanciali</a></li>
+          <li><a href="https://www.bononiamaterassi.com/collections/poltrone-relax">Poltrone Relax</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Bononia Materassi</span>
+      <span>Powered by Shopify</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const WA = '393468069102';
+  const steps = document.querySelectorAll('.step');
+  const N = steps.length;
+  const fill = document.getElementById('progFill');
+  const lbl  = document.getElementById('progLbl');
+  const back = document.getElementById('btnBack');
+  const next = document.getElementById('btnNext');
+  const nLbl = document.getElementById('nextLbl');
+  const suc  = document.getElementById('qSuccess');
+  const nav  = document.getElementById('qNav');
+  const wa   = document.getElementById('waLink');
+  const sb   = document.getElementById('sucBody');
+  let cur = 1;
+  const a = {};
+
+  document.querySelectorAll('.opts').forEach(g => {
+    g.addEventListener('click', e => {
+      const b = e.target.closest('.opt');
+      if (!b) return;
+      g.querySelectorAll('.opt').forEach(x => x.classList.remove('sel'));
+      b.classList.add('sel');
+      a[g.dataset.field] = b.dataset.v;
+      chk();
+      setTimeout(() => { if (cur < N) go(); }, 260);
+    });
+  });
+
+  document.querySelectorAll('.fi,.ft').forEach(i => {
+    i.addEventListener('input', () => { a[i.name] = i.value.trim(); chk(); });
+    i.addEventListener('keydown', e => { if(e.key==='Enter'&&i.tagName!=='TEXTAREA'){e.preventDefault();if(!next.disabled)next.click();}});
+  });
+
+  function chk(){
+    const s = steps[cur-1];
+    let ok = true;
+    s.querySelectorAll('.opts[data-req="true"]').forEach(g => { if(!a[g.dataset.field]) ok=false; });
+    s.querySelectorAll('[data-req="true"]').forEach(i => { if(i.matches('.fi,.ft')&&!i.value.trim()) ok=false; });
+    next.disabled = !ok;
+  }
+
+  function show(n){
+    steps.forEach(s=>s.classList.remove('active'));
+    steps[n-1].classList.add('active');
+    fill.style.width = Math.round(n/N*100)+'%';
+    lbl.textContent = `Passo ${n} di ${N}`;
+    back.classList.toggle('hidden', n===1);
+    nLbl.textContent = n===N ? 'Invia richiesta' : 'Continua';
+    chk();
+    const f = steps[n-1].querySelector('.fi,.ft');
+    if(f) setTimeout(()=>f.focus(),320);
+  }
+
+  function go(){
+    if(next.disabled) return;
+    if(cur<N){ cur++; show(cur); } else send();
+  }
+
+  back.addEventListener('click',()=>{ if(cur>1){cur--;show(cur);} });
+  next.addEventListener('click', go);
+
+  function send(){
+    next.disabled=true; nLbl.textContent='Invio…';
+    const nome = [a.nome,a.cognome].filter(Boolean).join(' ');
+    const msg = [
+      '👋 *Richiesta consulenza — Bononia Materassi*','',
+      nome        ? `*Nome:* ${nome}`          : null,
+      a.telefono  ? `*Tel:* ${a.telefono}`     : null,
+      a.email     ? `*Email:* ${a.email}`      : null,
+      '',
+      `*Prodotto:* ${a.prodotto    ||'—'}`,
+      `*Per chi:* ${a.destinatario ||'—'}`,
+      `*Materiale:* ${a.materiale  ||'—'}`,
+      `*Misure:* ${a.misura        ||'—'}`,
+      `*Quando:* ${a.tempistica    ||'—'}`,
+      a.note ? `\n*Note:* ${a.note}` : null,
+    ].filter(Boolean).join('\n');
+
+    const url = `https://wa.me/${WA}?text=${encodeURIComponent(msg)}`;
+    wa.href = url;
+    if(a.nome) sb.textContent = `Grazie ${a.nome}! Clicca il pulsante per inviare la richiesta a Danila su WhatsApp. Ti risponderemo al più presto.`;
+
+    document.getElementById('stepsWrap').style.display='none';
+    document.getElementById('cardHead').style.display='none';
+    nav.style.display='none';
+    suc.classList.add('on');
+    setTimeout(()=>window.open(url,'_blank'),650);
+  }
+
+  show(1);
+})();
+</script>
+</body>
+</html>
