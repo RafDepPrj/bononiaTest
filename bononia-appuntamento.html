@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prenota una consulenza — Bononia Materassi</title>
+<meta name="description" content="Prenota una consulenza gratuita presso il nostro showroom a Solofra. Ti aiutiamo a trovare il materasso perfetto per le tue esigenze.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================
+   RESET + BASE
+   ============================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Assistant', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--bg);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+img { display: block; max-width: 100%; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+a { text-decoration: none; color: inherit; }
+
+/* ============================================
+   DESIGN TOKENS — Bononia palette
+   ============================================ */
+:root {
+  --blue:       #334fb4;
+  --blue-dark:  #1e3490;
+  --blue-light: #5570d4;
+  --blue-soft:  #e8ecfa;
+  --gold:       #b49240;
+  --gold-light: #d4b060;
+  --ink:        #121212;
+  --ink-soft:   #4a4a4a;
+  --ink-muted:  #888;
+  --bg:         #f7f7f5;
+  --white:      #ffffff;
+  --surface:    #ffffff;
+  --border:     rgba(18,18,18,0.1);
+
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans:  'Assistant', sans-serif;
+
+  --container: 1100px;
+  --radius:    12px;
+  --radius-lg: 20px;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ============================================
+   LAYOUT
+   ============================================ */
+.page-wrap {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+/* LEFT PANEL — branding */
+.panel-brand {
+  background: var(--blue);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 48px 52px;
+  overflow: hidden;
+  min-height: 100vh;
+}
+
+/* pattern geometrico di sfondo */
+.panel-brand::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 80% 20%, rgba(212,176,96,0.2) 0%, transparent 50%),
+    radial-gradient(circle at 10% 80%, rgba(255,255,255,0.06) 0%, transparent 50%);
+  pointer-events: none;
+}
+.brand-grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.05;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+
+.brand-top { position: relative; z-index: 2; }
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 64px;
+}
+.brand-logo-mark {
+  width: 44px;
+  height: 44px;
+  background: var(--white);
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  color: var(--blue);
+  flex-shrink: 0;
+}
+.brand-logo-mark svg { width: 26px; height: 26px; }
+.brand-logo-text {
+  font-family: var(--serif);
+  font-size: 1.45rem;
+  font-weight: 500;
+  color: var(--white);
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+}
+.brand-logo-text small {
+  display: block;
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  margin-top: 3px;
+}
+
+.brand-headline {
+  font-family: var(--serif);
+  font-size: clamp(2.4rem, 4vw, 3.6rem);
+  font-weight: 400;
+  color: var(--white);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin-bottom: 24px;
+}
+.brand-headline em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--gold-light);
+}
+
+.brand-sub {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.65;
+  max-width: 360px;
+  margin-bottom: 48px;
+}
+
+.brand-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.brand-features li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.85);
+  font-weight: 500;
+}
+.feat-icon {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.12);
+  display: grid;
+  place-items: center;
+  color: var(--gold-light);
+}
+.feat-icon svg { width: 18px; height: 18px; }
+
+.brand-bottom {
+  position: relative;
+  z-index: 2;
+}
+.brand-address {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.6;
+}
+.brand-address strong {
+  display: block;
+  color: rgba(255,255,255,0.7);
+  font-weight: 600;
+  margin-bottom: 4px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+}
+
+/* decorative bed illustration */
+.brand-deco {
+  position: absolute;
+  bottom: 120px;
+  right: -20px;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+/* RIGHT PANEL — quiz */
+.panel-quiz {
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px 64px;
+  min-height: 100vh;
+}
+
+@media (max-width: 860px) {
+  .page-wrap { grid-template-columns: 1fr; }
+  .panel-brand { min-height: auto; padding: 36px 28px 40px; }
+  .brand-headline { font-size: 2.2rem; margin-bottom: 16px; }
+  .brand-sub { margin-bottom: 32px; }
+  .brand-features { gap: 12px; }
+  .brand-bottom { margin-top: 36px; }
+  .brand-deco { display: none; }
+  .panel-quiz { padding: 44px 28px 56px; }
+}
+@media (max-width: 420px) {
+  .panel-brand { padding: 28px 20px 32px; }
+  .panel-quiz { padding: 36px 20px 48px; }
+  .brand-headline { font-size: 1.9rem; }
+}
+
+/* ============================================
+   PROGRESS
+   ============================================ */
+.quiz-progress {
+  margin-bottom: 40px;
+}
+.quiz-progress-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 10px;
+}
+.quiz-progress-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--ink-muted);
+}
+.quiz-progress-pct {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--blue);
+  letter-spacing: -0.02em;
+}
+.quiz-progress-bar {
+  position: relative;
+  height: 4px;
+  background: var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.quiz-progress-fill {
+  position: absolute;
+  inset: 0;
+  width: 0%;
+  background: linear-gradient(90deg, var(--blue), var(--blue-light));
+  border-radius: 999px;
+  transition: width 0.7s var(--ease);
+}
+.quiz-progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 60px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+  animation: shimmer 2s infinite;
+}
+@keyframes shimmer {
+  0%   { transform: translateX(-60px); }
+  100% { transform: translateX(30px); }
+}
+
+/* ============================================
+   STEPS
+   ============================================ */
+.quiz-steps { position: relative; min-height: 380px; }
+
+.quiz-step {
+  display: none;
+  animation: stepIn 0.5s var(--ease);
+}
+.quiz-step.active { display: block; }
+@keyframes stepIn {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.step-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--blue);
+  margin-bottom: 12px;
+}
+.step-title {
+  font-family: var(--serif);
+  font-size: clamp(1.7rem, 3vw, 2.4rem);
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+.step-title em {
+  color: var(--blue);
+  font-style: italic;
+  font-weight: 300;
+}
+.step-help {
+  font-size: 0.9rem;
+  color: var(--ink-muted);
+  margin-bottom: 28px;
+}
+
+/* ============================================
+   OPTIONS GRID
+   ============================================ */
+.quiz-options {
+  display: grid;
+  gap: 10px;
+}
+.quiz-options.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.quiz-options.cols-3 { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 600px) {
+  .quiz-options.cols-2,
+  .quiz-options.cols-3 { grid-template-columns: 1fr; }
+}
+
+.quiz-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.3s var(--ease);
+  text-align: left;
+  color: var(--ink);
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+.quiz-option::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--blue);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.quiz-option:hover {
+  border-color: var(--blue-light);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(51,79,180,0.1);
+}
+.quiz-option.selected {
+  border-color: var(--blue);
+  background: var(--blue-soft);
+}
+.quiz-option.selected::before { opacity: 0; }
+
+.option-icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--blue-soft);
+  display: grid;
+  place-items: center;
+  color: var(--blue);
+  transition: all 0.3s;
+  position: relative;
+  z-index: 1;
+}
+.quiz-option.selected .option-icon {
+  background: var(--blue);
+  color: var(--white);
+}
+.option-icon svg { width: 20px; height: 20px; }
+
+.option-text {
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+.option-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--ink);
+  margin-bottom: 2px;
+}
+.option-sub {
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+}
+
+.option-check {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  display: grid;
+  place-items: center;
+  transition: all 0.3s;
+  position: relative;
+  z-index: 1;
+}
+.quiz-option.selected .option-check {
+  background: var(--blue);
+  border-color: var(--blue);
+}
+.option-check svg {
+  width: 10px; height: 10px;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: all 0.3s;
+  color: var(--white);
+}
+.quiz-option.selected .option-check svg {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ============================================
+   INPUTS
+   ============================================ */
+.quiz-inputs {
+  display: grid;
+  gap: 12px;
+}
+.quiz-inputs input,
+.quiz-inputs textarea,
+.quiz-inputs select {
+  width: 100%;
+  padding: 15px 18px;
+  border-radius: var(--radius);
+  border: 1.5px solid var(--border);
+  background: var(--white);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  transition: all 0.3s;
+  appearance: none;
+}
+.quiz-inputs input::placeholder,
+.quiz-inputs textarea::placeholder { color: var(--ink-muted); }
+.quiz-inputs input:focus,
+.quiz-inputs textarea:focus,
+.quiz-inputs select:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(51,79,180,0.1);
+}
+.quiz-inputs textarea { min-height: 90px; resize: vertical; }
+
+.input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 500px) { .input-row { grid-template-columns: 1fr; } }
+
+/* ============================================
+   NAVIGATION
+   ============================================ */
+.quiz-nav {
+  margin-top: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+}
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+  padding: 10px 16px;
+  border-radius: 999px;
+  transition: all 0.3s;
+}
+.btn-back:hover { color: var(--ink); background: var(--border); }
+.btn-back.hidden { visibility: hidden; pointer-events: none; }
+
+.btn-next {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  background: var(--blue);
+  color: var(--white);
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.93rem;
+  letter-spacing: 0.01em;
+  transition: all 0.3s var(--ease);
+}
+.btn-next:hover:not(:disabled) {
+  background: var(--blue-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(51,79,180,0.3);
+}
+.btn-next:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.btn-next .arrow { transition: transform 0.3s; }
+.btn-next:hover:not(:disabled) .arrow { transform: translateX(4px); }
+
+/* ============================================
+   SUCCESS
+   ============================================ */
+.quiz-success {
+  display: none;
+  text-align: center;
+  padding: 20px;
+  animation: stepIn 0.6s var(--ease);
+}
+.quiz-success.active { display: block; }
+
+.success-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--blue);
+  margin: 0 auto 24px;
+  display: grid;
+  place-items: center;
+  color: var(--white);
+  animation: pop 0.5s cubic-bezier(0.22, 1.5, 0.36, 1);
+}
+@keyframes pop {
+  0%   { transform: scale(0); }
+  100% { transform: scale(1); }
+}
+.success-icon svg { width: 34px; height: 34px; }
+
+.success-title {
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+.success-title em { color: var(--blue); font-style: italic; }
+
+.success-text {
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  max-width: 400px;
+  margin: 0 auto 32px;
+  line-height: 1.65;
+}
+
+.btn-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 30px;
+  background: #25D366;
+  color: var(--white);
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: all 0.3s var(--ease);
+  box-shadow: 0 8px 24px rgba(37,211,102,0.3);
+}
+.btn-whatsapp:hover {
+  background: #1ebe5a;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px rgba(37,211,102,0.4);
+}
+.btn-whatsapp svg { width: 22px; height: 22px; }
+
+/* ============================================
+   FORM MSG
+   ============================================ */
+#formMsg {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  min-height: 18px;
+  text-align: center;
+}
+.form-msg-error { color: #c0392b; }
+
+/* ============================================
+   BACK TO SITE LINK
+   ============================================ */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  transition: color 0.3s;
+  margin-bottom: 40px;
+}
+.back-link:hover { color: rgba(255,255,255,0.9); }
+.back-link svg { width: 14px; height: 14px; }
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- ===================== PANEL BRAND ===================== -->
+  <div class="panel-brand">
+    <div class="brand-grid"></div>
+
+    <!-- Decorazione letto SVG -->
+    <div class="brand-deco" aria-hidden="true">
+      <svg width="340" height="220" viewBox="0 0 340 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- struttura letto -->
+        <rect x="20" y="90" width="300" height="110" rx="8" fill="white"/>
+        <!-- testata -->
+        <rect x="20" y="50" width="60" height="55" rx="6" fill="white"/>
+        <!-- materasso -->
+        <rect x="30" y="82" width="280" height="30" rx="6" fill="white" opacity="0.7"/>
+        <!-- cuscini -->
+        <rect x="35" y="58" width="55" height="32" rx="5" fill="white" opacity="0.5"/>
+        <rect x="100" y="58" width="55" height="32" rx="5" fill="white" opacity="0.5"/>
+        <!-- gambe -->
+        <rect x="30" y="195" width="14" height="18" rx="3" fill="white" opacity="0.6"/>
+        <rect x="296" y="195" width="14" height="18" rx="3" fill="white" opacity="0.6"/>
+      </svg>
+    </div>
+
+    <div class="brand-top">
+      <a href="https://www.bononiamaterassi.com" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        Torna al sito
+      </a>
+
+      <div class="brand-logo">
+        <div class="brand-logo-mark">
+          <!-- icona materasso stilizzata -->
+          <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="9" width="22" height="12" rx="3" fill="currentColor"/>
+            <rect x="2" y="6" width="4" height="5" rx="1.5" fill="currentColor" opacity="0.6"/>
+            <rect x="6" y="6" width="4" height="5" rx="1.5" fill="currentColor" opacity="0.6"/>
+            <rect x="5" y="19" width="3" height="4" rx="1.5" fill="currentColor" opacity="0.5"/>
+            <rect x="18" y="19" width="3" height="4" rx="1.5" fill="currentColor" opacity="0.5"/>
+          </svg>
+        </div>
+        <div class="brand-logo-text">
+          Bononia Materassi
+          <small>Solofra, Avellino</small>
+        </div>
+      </div>
+
+      <h1 class="brand-headline">
+        Il riposo <em>perfetto</em><br>inizia da qui.
+      </h1>
+      <p class="brand-sub">
+        Raccontaci le tue esigenze in pochi passi. Ti ricontattiamo su WhatsApp per fissare la consulenza gratuita nel nostro showroom.
+      </p>
+
+      <ul class="brand-features">
+        <li>
+          <span class="feat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"></path></svg>
+          </span>
+          Consulenza telefonica gratuita
+        </li>
+        <li>
+          <span class="feat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+          </span>
+          Showroom a Solofra (AV)
+        </li>
+        <li>
+          <span class="feat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+          </span>
+          Produzione artigianale made in Italy
+        </li>
+        <li>
+          <span class="feat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          </span>
+          Risposta entro 24 ore
+        </li>
+      </ul>
+    </div>
+
+    <div class="brand-bottom">
+      <div class="brand-address">
+        <strong>Dove siamo</strong>
+        Via Casa Papa, 164 — Solofra (AV)<br>
+        Lun–Sab · 9:00–18:00
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== PANEL QUIZ ===================== -->
+  <div class="panel-quiz">
+
+    <div id="quizWrap">
+
+      <!-- Progress Bar -->
+      <div class="quiz-progress">
+        <div class="quiz-progress-head">
+          <span class="quiz-progress-label">Passo <span id="stepCurrent">1</span> di <span id="stepTotal">6</span></span>
+          <span class="quiz-progress-pct"><span id="pctValue">17</span>%</span>
+        </div>
+        <div class="quiz-progress-bar">
+          <div class="quiz-progress-fill" id="progressFill" style="width:17%;"></div>
+        </div>
+      </div>
+
+      <!-- Steps -->
+      <div class="quiz-steps" id="quizSteps">
+
+        <!-- STEP 1: Cosa cerchi -->
+        <div class="quiz-step active" data-step="1">
+          <div class="step-eyebrow">Benvenuto</div>
+          <h2 class="step-title">Cosa stai <em>cercando?</em></h2>
+          <p class="step-help">Seleziona il prodotto principale. Potrai aggiungere dettagli dopo.</p>
+          <div class="quiz-options cols-2" data-field="prodotto" data-required="true">
+
+            <button type="button" class="quiz-option" data-value="Materasso">
+              <span class="option-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="12" rx="3"/><path d="M2 10h20"/></svg>
+              </span>
+              <span class="option-text">
+                <span class="option-title">Materasso</span>
+                <span class="option-sub">Nuovo acquisto o sostituzione</span>
+              </span>
+              <span class="option-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            </button>
+
+            <button type="button" class="quiz-option" data-value="Rete a doghe">
+              <span class="option-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="8" width="20" height="10" rx="2"/><line x1="7" y1="8" x2="7" y2="18"/><line x1="12" y1="8" x2="12" y2="18"/><line x1="17" y1="8" x2="17" y2="18"/></svg>
+              </span>
+              <span class="option-text">
+                <span class="option-title">Rete a doghe</span>
+                <span class="option-sub">Fissa o motorizzata</span>
+              </span>
+              <span class="option-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            </button>
+
+            <button type="button" class="quiz-option" data-value="Guanciali">
+              <span class="option-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="9" rx="4"/></svg>
+              </span>
+              <span class="option-text">
+                <span class="option-title">Guanciali</span>
+                <span class="option-sub">Memory, lattice, piuma</span>
+              </span>
+              <span class="option-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            </button>
+
+            <button type="button" class="quiz-option" data-value="Set completo (materasso + rete)">
+              <span class="option-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+              </span>
+              <span class="option-text">
+                <span class="option-title">Set completo</span>
+                <span class="option-sub">Materasso + rete insieme</span>
+              </span>
+              <span class="option-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            </button>
+
+            <button type="button" class="quiz-option" data-value="Lista nozze">
+              <span class="option-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </span>
+              <span class="option-text">
+                <span class="option-title">Lista nozze</span>
+                <span class="option-sub">Corredo completo per gli sposi</span>
+              </span>
+              <span class="option-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            </button>
+
+            <button type="button" class="quiz-option" data-value="Rigenerazione materasso">
+              <span class="option-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+              </span>
+              <span class="option-text">
+                <span class="option-title">Rigenerazione</span>
+                <span class="option-sub">Rinnova il materasso vecchio</span>
+              </span>
+              <span class="option-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            </button>
+
+          </div>
+        </div>
+
+        <!-- STEP 2: Per chi -->
+        <div class="quiz-step" data-step="2">
+          <div class="step-eyebrow">Step 2</div>
+          <h2 class="step-title">Per <em>chi</em> è il materasso?</h2>
+          <p class="step-help">Ci aiuta a consigliarti il prodotto più adatto.</p>
+          <div class="quiz-options" data-field="destinatario" data-required="true">
+
+            <button type="button" class="quiz-option" data-value="Coppia">
+              <span class="option-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </span>
+              <span class="option-text">
+                <span class="option-title">Coppia</span>
+                <span class="option-sub">Letto matrimoniale</span>
+              </span>
+              <span class="option-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            </button>
+
+            <button type="button" class="quiz-option" data-value="Singolo adulto">
+              <span class="option-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </span>
+              <span class="option-text">
+                <span class="option-title">Singolo adulto</span>
+                <span class="option-sub">Piazza singola o piazza e mezza</span>
+              </span>
+              <span class="option-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            </button>
+
+            <button type="button" class="quiz-option" data-value="Bambino / Ragazzo">
+              <span class="option-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M12 14c-5 0-8 2.5-8 4v1h16v-1c0-1.5-3-4-8-4z"/><path d="M9 6l1-2h4l1 2"/></svg>
+              </span>
+              <span class="option-text">
+                <span class="option-title">Bambino / Ragazzo</span>
+                <span class="option-sub">Per chi è in crescita</span>
+              </span>
+              <span class="option-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            </button>
+
+            <button type="button" class="quiz-option" data-value="Anziano o esigenze speciali">
+              <span class="option-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </span>
+              <span class="option-text">
+                <span class="option-title">Esigenze speciali</span>
+                <span class="option-sub">Anziani, mal di schiena, allergie</span>
+              </span>
+              <span class="option-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            </button>
+
+          </div>
+        </div>
+
+        <!-- STEP 3: Materiale preferito -->
+        <div class="quiz-step" data-step="3">
+          <div class="step-eyebrow">Step 3</div>
+          <h2 class="step-title">Hai una <em>preferenza</em> di materiale?</h2>
+          <p class="step-help">Non preoccuparti se non sei sicuro — te lo spieghiamo noi.</p>
+          <div class="quiz-options cols-2" data-field="materiale" data-required="true">
+
+            <button type="button" class="quiz-option" data-value="Memory foam">
+              <span class="option-text">
+                <span class="option-title">Memory foam</span>
+                <span class="option-sub">Si adatta alla forma del corpo</span>
+              </span>
+              <span class="option-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            </button>
+
+            <button type="button" class="quiz-option" data-value="Lattice naturale">
+              <span class="option-text">
+                <span class="option-title">Lattice naturale</span>
+                <span class="option-sub">Traspirante, anti-acaro</span>
+              </span>
+              <span class="option-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            </button>
+
+            <button type="button" class="quiz-option" data-value="Molle insacchettate">
+              <span class="option-text">
+                <span class="option-title">Molle insacchettate</span>
+                <span class="option-sub">Sostegno e ventilazione</span>
+              </span>
+              <span class="option-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            </button>
+
+            <button type="button" class="quiz-option" data-value="Graphene">
+              <span class="option-text">
+                <span class="option-title">Graphene</span>
+                <span class="option-sub">Innovativo, per mal di schiena</span>
+              </span>
+              <span class="option-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            </button>
+
+            <button type="button" class="quiz-option" data-value="Non lo so ancora">
+              <span class="option-text">
+                <span class="option-title">Non lo so ancora</span>
+                <span class="option-sub">Mi aiutate voi a scegliere</span>
+              </span>
+              <span class="option-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            </button>
+
+          </div>
+        </div>
+
+        <!-- STEP 4: Misure -->
+        <div class="quiz-step" data-step="4">
+          <div class="step-eyebrow">Step 4</div>
+          <h2 class="step-title">Che <em>misure</em> ti servono?</h2>
+          <p class="step-help">Una stima va benissimo. Possiamo realizzare qualsiasi dimensione su misura.</p>
+          <div class="quiz-options" data-field="misura" data-required="true">
+
+            <button type="button" class="quiz-option" data-value="Singolo (80×190 / 90×200)">
+              <span class="option-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="8" height="13" rx="2"/></svg>
+              </span>
+              <span class="option-text">
+                <span class="option-title">Singolo</span>
+                <span class="option-sub">80×190 cm / 90×200 cm</span>
+              </span>
+              <span class="option-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            </button>
+
+            <button type="button" class="quiz-option" data-value="Piazza e mezza (120×190 / 120×200)">
+              <span class="option-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="11" height="13" rx="2"/></svg>
+              </span>
+              <span class="option-text">
+                <span class="option-title">Piazza e mezza</span>
+                <span class="option-sub">120×190 / 120×200 cm</span>
+              </span>
+              <span class="option-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            </button>
+
+            <button type="button" class="quiz-option" data-value="Matrimoniale (160×190 / 160×200)">
+              <span class="option-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/></svg>
+              </span>
+              <span class="option-text">
+                <span class="option-title">Matrimoniale</span>
+                <span class="option-sub">160×190 / 160×200 cm</span>
+              </span>
+              <span class="option-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            </button>
+
+            <button type="button" class="quiz-option" data-value="Misura fuori standard">
+              <span class="option-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+              </span>
+              <span class="option-text">
+                <span class="option-title">Misura fuori standard</span>
+                <span class="option-sub">Ovale, rotondo, trapezoidale…</span>
+              </span>
+              <span class="option-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            </button>
+
+          </div>
+        </div>
+
+        <!-- STEP 5: Quando -->
+        <div class="quiz-step" data-step="5">
+          <div class="step-eyebrow">Step 5</div>
+          <h2 class="step-title">Quando vorresti <em>venire?</em></h2>
+          <p class="step-help">Ci aiuta a organizzare la disponibilità del nostro consulente.</p>
+          <div class="quiz-options" data-field="tempistica" data-required="true">
+
+            <button type="button" class="quiz-option" data-value="Il prima possibile">
+              <span class="option-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </span>
+              <span class="option-text">
+                <span class="option-title">Il prima possibile</span>
+                <span class="option-sub">Entro questa settimana</span>
+              </span>
+              <span class="option-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            </button>
+
+            <button type="button" class="quiz-option" data-value="Entro 2-3 settimane">
+              <span class="option-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              </span>
+              <span class="option-text">
+                <span class="option-title">Entro 2-3 settimane</span>
+                <span class="option-sub">Tempistiche normali</span>
+              </span>
+              <span class="option-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            </button>
+
+            <button type="button" class="quiz-option" data-value="Sto solo raccogliendo informazioni">
+              <span class="option-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              </span>
+              <span class="option-text">
+                <span class="option-title">Sto raccogliendo info</span>
+                <span class="option-sub">Voglio prima un'idea di prezzi</span>
+              </span>
+              <span class="option-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            </button>
+
+          </div>
+        </div>
+
+        <!-- STEP 6: Contatti -->
+        <div class="quiz-step" data-step="6">
+          <div class="step-eyebrow">Ultimo passo — ti richiamiamo su WhatsApp</div>
+          <h2 class="step-title">Lasciaci <em>i tuoi dati.</em></h2>
+          <p class="step-help">Utilizziamo queste informazioni solo per contattarti. Nessuno spam, promesso.</p>
+          <div class="quiz-inputs">
+            <div class="input-row">
+              <input type="text" name="nome" placeholder="Nome" data-required="true">
+              <input type="text" name="cognome" placeholder="Cognome">
+            </div>
+            <input type="tel" name="telefono" placeholder="Numero di telefono *" data-required="true">
+            <input type="email" name="email" placeholder="Email (facoltativa)">
+            <textarea name="note" placeholder="Vuoi aggiungere qualcosa? (misure, note, domande)"></textarea>
+          </div>
+        </div>
+
+      </div><!-- /quiz-steps -->
+
+      <!-- SUCCESS -->
+      <div class="quiz-success" id="quizSuccess">
+        <div class="success-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h2 class="success-title">Richiesta <em>inviata!</em></h2>
+        <p class="success-text" id="successText">
+          Perfetto! Il nostro team ti contatterà su WhatsApp entro 24 ore per fissare la consulenza gratuita nel nostro showroom.
+        </p>
+        <a href="#" class="btn-whatsapp" id="waLink">
+          <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.97 0C5.365 0 0 5.365 0 11.97c0 2.09.548 4.085 1.591 5.836L.057 23.386a.5.5 0 00.609.609l5.58-1.535A11.924 11.924 0 0011.97 24c6.605 0 11.97-5.365 11.97-11.97S18.575 0 11.97 0zm0 21.818a9.8 9.8 0 01-4.998-1.367l-.358-.213-3.71 1.021 1.021-3.712-.213-.358A9.799 9.799 0 012.152 11.97c0-5.41 4.408-9.818 9.818-9.818s9.818 4.408 9.818 9.818-4.408 9.818-9.818 9.818z"/></svg>
+          Apri WhatsApp
+        </a>
+      </div>
+
+      <!-- Navigation -->
+      <div class="quiz-nav" id="quizNav">
+        <button type="button" class="btn-back hidden" id="btnBack">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          Indietro
+        </button>
+        <button type="button" class="btn-next" id="btnNext" disabled>
+          <span id="nextLabel">Continua</span>
+          <span class="arrow">→</span>
+        </button>
+      </div>
+
+      <div id="formMsg"></div>
+
+    </div><!-- /quizWrap -->
+  </div><!-- /panel-quiz -->
+
+</div><!-- /page-wrap -->
+
+<script>
+(function quiz() {
+  const WHATSAPP_NUMBER = '393468069102'; // 39 = prefisso Italia
+
+  const steps       = document.querySelectorAll('.quiz-step');
+  const totalSteps  = steps.length;
+  const fillEl      = document.getElementById('progressFill');
+  const pctEl       = document.getElementById('pctValue');
+  const stepCurEl   = document.getElementById('stepCurrent');
+  const stepTotEl   = document.getElementById('stepTotal');
+  const btnBack     = document.getElementById('btnBack');
+  const btnNext     = document.getElementById('btnNext');
+  const nextLabel   = document.getElementById('nextLabel');
+  const successEl   = document.getElementById('quizSuccess');
+  const navEl       = document.getElementById('quizNav');
+  const msgEl       = document.getElementById('formMsg');
+  const waLink      = document.getElementById('waLink');
+  const successText = document.getElementById('successText');
+
+  let current = 1;
+  const answers = {};
+
+  stepTotEl.textContent = totalSteps;
+
+  /* ── card options ── */
+  document.querySelectorAll('.quiz-options').forEach(group => {
+    group.addEventListener('click', e => {
+      const btn = e.target.closest('.quiz-option');
+      if (!btn) return;
+      group.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+      btn.classList.add('selected');
+      answers[group.dataset.field] = btn.dataset.value;
+      validateStep();
+      setTimeout(() => { if (current < totalSteps) goNext(); }, 320);
+    });
+  });
+
+  /* ── text inputs ── */
+  document.querySelectorAll('.quiz-inputs input, .quiz-inputs textarea').forEach(inp => {
+    inp.addEventListener('input', () => {
+      answers[inp.name] = inp.value.trim();
+      validateStep();
+    });
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && inp.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+        if (!btnNext.disabled) btnNext.click();
+      }
+    });
+  });
+
+  /* ── validation ── */
+  function validateStep() {
+    const step = steps[current - 1];
+    let valid = true;
+
+    step.querySelectorAll('.quiz-options[data-required="true"]').forEach(g => {
+      if (!answers[g.dataset.field]) valid = false;
+    });
+
+    step.querySelectorAll('[data-required="true"]').forEach(inp => {
+      if (inp.matches('input,textarea') && !inp.value.trim()) valid = false;
+      if (inp.type === 'email' && inp.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inp.value)) valid = false;
+    });
+
+    btnNext.disabled = !valid;
+  }
+
+  /* ── show step ── */
+  function showStep(n) {
+    steps.forEach(s => s.classList.remove('active'));
+    steps[n - 1].classList.add('active');
+    stepCurEl.textContent = n;
+
+    const pct = Math.round((n / totalSteps) * 100);
+    fillEl.style.width = pct + '%';
+    animateNum(parseInt(pctEl.textContent) || 0, pct, 600, v => pctEl.textContent = v);
+
+    btnBack.classList.toggle('hidden', n === 1);
+    nextLabel.textContent = (n === totalSteps) ? 'Invia richiesta' : 'Continua';
+    validateStep();
+
+    const first = steps[n - 1].querySelector('input, textarea');
+    if (first) setTimeout(() => first.focus(), 420);
+  }
+
+  function goNext() {
+    if (btnNext.disabled) return;
+    if (current < totalSteps) { current++; showStep(current); }
+    else submit();
+  }
+  function goBack() {
+    if (current > 1) { current--; showStep(current); }
+  }
+
+  btnNext.addEventListener('click', goNext);
+  btnBack.addEventListener('click', goBack);
+
+  /* ── numero animato ── */
+  function animateNum(from, to, dur, cb) {
+    const start = performance.now();
+    (function tick(now) {
+      const t = Math.min((now - start) / dur, 1);
+      const e = 1 - Math.pow(1 - t, 3);
+      cb(Math.round(from + (to - from) * e));
+      if (t < 1) requestAnimationFrame(tick);
+    })(performance.now());
+  }
+
+  /* ── submit → WhatsApp ── */
+  function submit() {
+    btnNext.disabled = true;
+    nextLabel.textContent = 'Invio…';
+    msgEl.textContent = '';
+
+    // Costruisce il messaggio WhatsApp
+    const nome     = answers['nome'] || '';
+    const cognome  = answers['cognome'] || '';
+    const telefono = answers['telefono'] || '';
+    const email    = answers['email'] || '';
+    const note     = answers['note'] || '';
+
+    const lines = [
+      `👋 *Nuova richiesta di consulenza — Bononia Materassi*`,
+      ``,
+      `*Nome:* ${nome} ${cognome}`.trim(),
+      telefono ? `*Telefono:* ${telefono}` : null,
+      email    ? `*Email:* ${email}` : null,
+      ``,
+      `*Prodotto cercato:* ${answers['prodotto'] || '—'}`,
+      `*Per chi:* ${answers['destinatario'] || '—'}`,
+      `*Materiale preferito:* ${answers['materiale'] || '—'}`,
+      `*Misure:* ${answers['misura'] || '—'}`,
+      `*Tempistica:* ${answers['tempistica'] || '—'}`,
+      note ? `\n*Note:* ${note}` : null,
+    ].filter(Boolean).join('\n');
+
+    const waMsg = encodeURIComponent(lines);
+    const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${waMsg}`;
+    waLink.href = waUrl;
+
+    // Aggiorna testo success
+    successText.textContent = `Grazie ${nome ? nome + '!' : '!'} Clicca il pulsante qui sotto per aprire WhatsApp e inviare la tua richiesta direttamente a Danila. Ti risponderà al più presto.`;
+
+    // Mostra success
+    document.getElementById('quizSteps').style.display = 'none';
+    document.querySelector('.quiz-progress').style.display = 'none';
+    navEl.style.display = 'none';
+    successEl.classList.add('active');
+
+    // Apre WhatsApp automaticamente dopo 800ms
+    setTimeout(() => { window.open(waUrl, '_blank'); }, 800);
+  }
+
+  // init
+  showStep(1);
+})();
+</script>
+
+</body>
+</html>
